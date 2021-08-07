@@ -38,5 +38,8 @@ Clients are the players in the system.  They are a program run on a mobile devic
   1. If the Hub is assigning imposters then the task success will be reported to the hub and the task list will be loaded automatically.
   2. If the Hub is NOT assigning imposter then a dialog will pop up asking if the user would like to report the task success.
 
-In the second case, the way that task completion is managed is by taking the total number of tasks expected.  Simply, if \[\]
+In the second case, the way that task completion is managed is by taking the total number of tasks per person times the number of non-imposter players and comparing that to the actual number of completed tasks.  Simply, if $s$ is the number of short tasks and $l$ is the number of long tasks, $n$ is the number of players and $i$ is the number of imposters, then the number of completed tasks needed must be at least
+```math
+(s+l)*(n-i)
+```
   
