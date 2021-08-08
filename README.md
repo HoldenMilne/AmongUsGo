@@ -42,3 +42,4 @@ In the second case, the way that task completion is managed is by taking the tot
 
 In this case reporting tasks is self selected as the hub has no idea who the imposters are.  Thus on task completion the dialog pops up to ask if the player would like to report the task.  If they do, their task will be added to the completed task count, if not then the hub will not count it.  Imposters thus can complete tasks and choose not to report the tasks.
   
+ # Setup
