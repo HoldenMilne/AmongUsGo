@@ -342,7 +342,6 @@ namespace StationsAndHubs.Scripts
             FindObjectOfType<SettingsManager>().LoadSettingsFromPanel();
             GameTask.LoadGameTasks(AmongUsGoSettings.singleton.taskListName);
             
-
             string[] imposterNames = null;
             if (AmongUsGoSettings.singleton.assignImposters)
             {
@@ -404,8 +403,8 @@ namespace StationsAndHubs.Scripts
 
                 if (pd.type == PlayerData.PlayerType.Player)
                 {
-                    pd.SetCurrentLocation("Unknown3");
-                    pd.SetLastLocation("Unknown3");
+                    pd.SetCurrentLocation("Unknown");
+                    pd.SetLastLocation("Unknown");
                     pd.StartGameThin(AmongUsGoSettings.singleton.shortTasks, AmongUsGoSettings.singleton.longTasks,
                         tasksStrings, AmongUsGoSettings.singleton.assignImposters,
                         AmongUsGoSettings.singleton.ghostsVisitStations,
@@ -674,7 +673,13 @@ namespace StationsAndHubs.Scripts
         public bool CheckWin()
         {
             var settings = AmongUsGoSettings.singleton;
+            if (settings.assignImposters)
+                return CheckWinWithKnownImposters(settings);
+            return CheckWinSelfReported(settings);
+        }
 
+        private bool CheckWinSelfReported(AmongUsGoSettings settings)
+        {
             var count = 0;
             var total = 0;
             foreach (var pd in FindObjectsOfType<PlayerData>())
@@ -685,9 +690,26 @@ namespace StationsAndHubs.Scripts
                     total += pd.tasksCompleted;
                 }
             }
-            Debug.Log(total+  ": :: :"+(settings.longTasks + settings.shortTasks) * (count-settings.numImposters));
-            // true nTasks >= max nTasks 
+            Debug.Log(total+" "+count + (settings.longTasks + settings.shortTasks) * (count-settings.numImposters));
             return total>=(settings.longTasks + settings.shortTasks) * (count-settings.numImposters) && settings.crewWinsOnTaskCompletion;
+
+        }
+
+        private bool CheckWinWithKnownImposters(AmongUsGoSettings settings)
+        {
+            var total = 0;
+            var tasksPerPerson = settings.longTasks + settings.shortTasks;
+            foreach (var pd in FindObjectsOfType<PlayerData>())
+            {
+                if (pd.type == PlayerData.PlayerType.Player && !pd.isImposter)
+                {
+                    if (pd.tasksCompleted < tasksPerPerson)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         /**
@@ -756,7 +778,7 @@ namespace StationsAndHubs.Scripts
             }
         }
 
-        void CrewmatesWin()
+        public void CrewmatesWin()
         {
             foreach (var pd in GameObject.FindObjectsOfType<PlayerData>())
             {

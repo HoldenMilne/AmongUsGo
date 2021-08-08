@@ -35,8 +35,6 @@ public class VotingTimer : MonoBehaviour
 
     public IEnumerator Timer()
     {
-        time = 10;
-        
         text.text = "Time Remaining:\n"+FormatTime(time);
         while (time > 0)
         {

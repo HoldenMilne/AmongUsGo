@@ -1,3 +1,7 @@
+## [] Task has not be completed
+## [x] means complete 
+## [-] done but not yet tested
+
 [x] - Some reason "Start Game" only works 80% of the time.
 
 [x] -  We now are properly delievering game tasks (locations and what not).  Filtering should probably happen before sending the data to limit data transfer.  That use locations to filter tasks and then send the list of tasks or even the correct number of randomized tasks.
@@ -7,6 +11,11 @@
 [] - GameController is still trying to communicate with the Java server.  Must comm with the mirror server.
 
 ----------------------------
-[x] review above
+[x] - review above
 
-[] crewmates win on task is stupid buggy... Make sure it is reset compoleted task count on start game.  But also imposters might be automatically winning for crew on task complete?
+[] - crewmates win on task is stupid buggy... Make sure it is reset completed task count on start game.  But also imposters might be automatically winning for crew on task complete?
+        [x] - Resolved for assign imposters, but still an issue for when imposters are assigned manually.
+        [-] - Players don't have their task counts reset...
+[] - Fix empty garbage wall glitch-error and a catch all for the cases where it does get blocked.  (10 seconds after the lever has been moved?)
+
+[] - Add location name to the stations.

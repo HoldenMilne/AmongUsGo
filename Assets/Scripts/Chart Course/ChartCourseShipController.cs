@@ -56,7 +56,7 @@ public class ChartCourseShipController : MonoBehaviour
         Debug.Log("MADE IT");
         var gc = FindObjectOfType<GameController>();
 
-        gc.reportCanvas.enabled = true;
+        gc.Report();
     }
 
     private bool CheckCheckpoint()

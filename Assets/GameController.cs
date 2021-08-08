@@ -868,7 +868,6 @@ public class GameController : MonoBehaviour
             break;
             case "WIN":
                 // ALERT TO WIN!
-                winPanel.enabled = true;
                 break;
         }
 
@@ -975,6 +974,19 @@ public class GameController : MonoBehaviour
         }
         else
             reportCanvas.enabled = true;
+    }
+
+    public void Report()
+    {
+        if (AmongUsGoSettings.singleton.assignImposters)
+        {
+            TaskSuccess(true);
+        }
+        else
+        {
+            // don't show, just report
+            reportCanvas.enabled = true;
+        }
     }
 }
 

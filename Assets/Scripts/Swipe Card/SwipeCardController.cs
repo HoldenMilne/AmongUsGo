@@ -139,7 +139,7 @@ public class SwipeCardController : MonoBehaviour
     IEnumerator Success()
     {
         yield return new WaitForSeconds(timeDelayOnComplete+.5f);
-        gc.reportCanvas.enabled = true;
+        gc.Report();
     }
     
     IEnumerator Blink()

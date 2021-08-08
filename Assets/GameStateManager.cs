@@ -49,12 +49,17 @@ public class GameStateManager : MonoBehaviour
     
     public void GameEnd()
     {
-        playingCanvas.enabled = false;
-        votingCanvas.enabled = false;
+        ReturnToMenu();
 
         ((CustomNetworkManager) NetworkManager.singleton).GameEnd();
     }
-    
+    public void ReturnToMenu()
+    {
+        playingCanvas.enabled = false;
+        votingCanvas.enabled = false;
+
+    }
+
     // Update is called once per frame
     void Update()
     {

@@ -69,7 +69,7 @@ public class AdminPanel : MonoBehaviour
                 }
             }
             var anc = go.GetComponent<RectTransform>().anchoredPosition;
-            anc.y = - 60 * i;
+            anc.y = - 34 * i;
             i += 1;
             go.GetComponent<RectTransform>().anchoredPosition = anc;
             var imgComp = go.GetComponentInChildren<Image>();
@@ -79,7 +79,7 @@ public class AdminPanel : MonoBehaviour
         }
 
         var size = scrollView.GetComponent<RectTransform>().sizeDelta;
-        size.y = i * 60;
+        size.y = i * 34;
         scrollView.GetComponent<RectTransform>().sizeDelta = size;
         
         

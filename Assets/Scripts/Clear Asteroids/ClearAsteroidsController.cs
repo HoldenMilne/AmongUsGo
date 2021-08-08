@@ -99,7 +99,7 @@ public class ClearAsteroidsController : MonoBehaviour
         done = true;
         yield return new WaitForSeconds(1f);
 
-        gc.reportCanvas.enabled = true;
+        gc.Report();
     }
     IEnumerator DestroyAsteroid(AsteroidController ast)
     {

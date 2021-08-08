@@ -183,7 +183,7 @@ public class StartReactorController : MonoBehaviour
         StartCoroutine(Blinking());
         yield return new WaitUntil(NotBlinking);
         yield return new WaitForSeconds(1f);
-        FindObjectOfType<GameController>().reportCanvas.enabled=true;
+        FindObjectOfType<GameController>().Report();
     }
 
     private bool blinking;

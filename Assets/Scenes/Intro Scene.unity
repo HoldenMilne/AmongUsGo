@@ -3842,7 +3842,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 755144113}
         m_TargetAssemblyTypeName: CanvasFlipper, Assembly-CSharp
-        m_MethodName: Open
+        m_MethodName: Close
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1471719113}
@@ -7548,7 +7548,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 1
-  m_BlocksRaycasts: 0
+  m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!1 &1481820250
 GameObject:

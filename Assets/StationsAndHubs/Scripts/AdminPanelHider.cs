@@ -11,11 +11,34 @@ public class AdminPanelHider : MonoBehaviour
         // grab the correct object maybe?
     }
 
+    private bool open = false;
+
+    private float time = 0;
+
+    public float sleepDelay = 3;
     // Update is called once per frame
     void Update()
     {
-        
+        if (!open && (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0 || Input.anyKeyDown))
+        {
+            ShowHideCover(true);
+            open = true;
+            time = Time.time;
+        }
+
+        if (open && Time.time-time>sleepDelay)
+        {
+            open = false;
+            ShowHideCover(false);
+        }
     }
+
+    private IEnumerator WakeUp()
+    {
+        ShowHideCover(true);
+        yield return null;
+    }
+
 
     public void ShowHideCover(bool hide)
     {
@@ -29,6 +52,7 @@ public class AdminPanelHider : MonoBehaviour
             StartCoroutine(ShowCover());
         }
     }
+    
 
     private IEnumerator HideCover()
     {

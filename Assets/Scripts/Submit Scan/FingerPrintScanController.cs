@@ -53,7 +53,7 @@ public class FingerPrintScanController : MonoBehaviour
 
         var gc = FindObjectOfType<GameController>();
 
-        gc.reportCanvas.enabled = true;
+        gc.Report();
     }
 
     

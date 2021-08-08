@@ -101,6 +101,6 @@ public class HandleController : MonoBehaviour
         done = true;
         Debug.Log("SUCCESS");
         
-        gc.reportCanvas.enabled = true;
+        gc.Report();
     }
 }

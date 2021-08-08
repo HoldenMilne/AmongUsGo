@@ -356,7 +356,7 @@ namespace StationsAndHubs.Scripts
                         
                         tasks.Add(task);
                     }
-                    Debug.Log("SIZE ?? "+tasks.Count);
+                    tasksCompleted = 0;
                     firstTaskLoad = true;
                     
                     sceneLoading=SceneManager.LoadSceneAsync("TaskListScene");
@@ -617,7 +617,11 @@ namespace StationsAndHubs.Scripts
             
             var resp = cnm.SendToServer(s);
             if (cnm.CheckWin())
+            {
                 resp = "WIN--C";
+                cnm.CrewmatesWin();
+                FindObjectOfType<GameStateManager>().ReturnToMenu();
+            }
             
             if (!resp.StartsWith("NONE--"))
                 RespondCall(resp);

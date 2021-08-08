@@ -225,6 +225,6 @@ public class FixWiringController : MonoBehaviour
         Debug.Log("MADE IT");
         var gc = FindObjectOfType<GameController>();
 
-        gc.reportCanvas.enabled = true;
+        gc.Report();
     }
 }

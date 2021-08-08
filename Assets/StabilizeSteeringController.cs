@@ -136,6 +136,6 @@ public class StabilizeSteeringController : MonoBehaviour
         blinking = true;
         yield return new WaitUntil(NotBlinking);
         yield return new WaitForSeconds(1f);
-        gc.reportCanvas.enabled = true;
+        gc.Report();
     }
 }

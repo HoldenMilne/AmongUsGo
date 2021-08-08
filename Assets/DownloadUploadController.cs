@@ -85,7 +85,7 @@ public class DownloadUploadController : MonoBehaviour
 
         var gc = FindObjectOfType<GameController>();
 
-        gc.reportCanvas.enabled = true;
+        gc.Report();
     }
 
     private bool IsDone()
