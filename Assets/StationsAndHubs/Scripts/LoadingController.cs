@@ -118,15 +118,33 @@ public class LoadingController : MonoBehaviour
         
         loadingScreen.enabled = true;
         var loadController = FindObjectOfType<LoadingController>();
+        var currentScene = SceneManager.GetActiveScene().name;
         StartCoroutine(loadController.Loading(scene));
         
         yield return new WaitForSeconds(3f);
-        loadingOp = SceneManager.LoadSceneAsync(scene);
+        loadingOp = SceneManager.LoadSceneAsync(scene,LoadSceneMode.Additive);
         //Start Corouting to Close Loading Canvas
+        var cnm = FindObjectOfType<CustomNetworkManager>();
         yield return new WaitUntil(SceneIsLoaded);
-        FindObjectOfType<CustomNetworkManager>().StartClient();
-        Debug.Log("Load complete");
-        loadingScreen.enabled = false;
+        
+        try
+        {
+            cnm.StartClient();
+            loadingScreen.enabled = false;
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
+            SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName(currentScene));
+            Debug.Log("Load complete");
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Could not connect to HUB at " +cnm.GetIP());
+            Debug.Log(e.Source);
+            Debug.Log(e.StackTrace);
+            Debug.Log(e.Message);
+            SceneManager.LoadSceneAsync("Station No Connect");
+        }
+
+        
     }
     
     public bool SceneIsLoaded()

@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Splash.unity
+    guid: cb5add58830fc38faab16b0834a96f2c
+  - enabled: 1
     path: Assets/Scenes/Intro Scene.unity
     guid: 96ecaee10382b861c9fd1cc1605494b2
   - enabled: 1
@@ -29,6 +32,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Fill Tank.unity
     guid: 834fdec272c3311ed888ff89818048f2
+  - enabled: 1
+    path: Assets/StationsAndHubs/Scenes/Station No Connect.unity
+    guid: 1543173b03adec05fafc94146771e52a
   - enabled: 1
     path: Assets/Scenes/Fix Wiring.unity
     guid: 6aeee112ff339673fad42d70244a54f2

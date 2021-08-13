@@ -102,10 +102,11 @@ public class HubMenuSelectController : MonoBehaviour
             IP = data[0];
             b = int.TryParse(data[1],out port);
         }
-        if (b && ValidPort(port) && ValidateIP(IP))
+        if (b && ValidPort(port) && ValidateIP(IP,out IP))
         {
             var cont = FindObjectOfType<CustomNetworkManager>();
-                cont.GetComponent<KcpTransport>().Port = (ushort) port;
+            cont.GetComponent<KcpTransport>().Port = (ushort) port;
+            Debug.Log("IP ADDR"+IP);
             cont.networkAddress = IP;
             sc.PlayBite("bell");
             //cont.StartClient();
@@ -118,28 +119,52 @@ public class HubMenuSelectController : MonoBehaviour
         }
     }
 
-    private bool ValidateIP(string ip)
+    private bool ValidateIP(string ip,out string outIp)
     {
+        while (ip.StartsWith("."))
+        {
+            ip = ip.Substring(1);
+        }
         int count = Count(ip,'.');//COUNT NUMBER OF "."  if 1 use x.y.{ip}, if 0 use x.y.z.{ip}, if 2 use x.{ip} else use ip
 
-        if (count > 3) return false;
+        if (count > 3)
+        {
+            outIp = ip;
+            return false;
+        }
         Debug.Log("IP dots: "+count+ " : "+ip);
 
         if (count < 3)
-            return false; // infuture get ipv4 and partial
+        {
+            var local = CustomNetworkManager.GetLocalIPv4().Split('.');
+            var ipstring = "";
+            for (int i = 0; i < local.Length - count-1; i++)
+            {
+                ipstring += local[i] + ".";
+            }
+
+            
+            ip = ipstring + ip;
+            Debug.Log("IPSTRING: "+ip);
+        }
 
         foreach (string s in ip.Split('.'))
         {
             int i = 0;
             if (!int.TryParse(s, out i))
             {
+                outIp = ip;
                 return false;
             }
 
             if (i < 0 || i > 255)
+            {
+                outIp = ip;
                 return false;
+            }
         }
 
+        outIp = ip;
         return true;
 
     }

@@ -14,6 +14,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
+using Object = UnityEngine.Object;
 using Random = System.Random;
 using Toggle = UnityEngine.UI.Toggle;
 
@@ -254,8 +255,11 @@ namespace StationsAndHubs.Scripts
 
             
             int i = 0;
-            foreach (var p in stationIdToLocation.Values)
+            foreach (var _p in stationIdToLocation.Values)
             {
+                var p = _p;
+                if (_p.Contains("#"))
+                    p = _p.Substring(_p.IndexOf("#") + 1);
                 var go = GameObject.Instantiate(playerDisplayObject,locSpawnPoint.transform) as GameObject;
                 go.GetComponentInChildren<Text>().text=p;
                 var anc = go.GetComponent<RectTransform>().anchoredPosition;
@@ -285,21 +289,18 @@ namespace StationsAndHubs.Scripts
         public override void OnStartServer()
         {
             base.OnStartServer();
-            
         }
         
 
         // GONNA NEED conn.connectionID TO location or locCode...
         public override void OnServerDisconnect(NetworkConnection conn)
         {
-            base.OnClientDisconnect(conn);
+            base.OnServerDisconnect(conn);
+            
             if (!objects.ContainsKey(conn.connectionId)) return;
+            
             var obj = objects[conn.connectionId];
-            /*var pd = obj.GetComponent<PlayerData>();
-            switch (pd.type)
-            {
-                
-            }*/
+            
             if (players.ContainsValue(objects[conn.connectionId]))
             {
                 var pname = idToPlayer[conn.connectionId];
@@ -307,14 +308,14 @@ namespace StationsAndHubs.Scripts
                 playerNames.Remove(pname);
                 idToPlayer.Remove(conn.connectionId);
                 RemakePlayerPanel();
-            }else if (stationIdToLocation.Values.Contains(conIdToStationId[conn.connectionId]))
+            } else if (stationIdToLocation.Keys.Contains(conIdToStationId[conn.connectionId]))
             {
-                    
                 var stationId = conIdToStationId[conn.connectionId];
                 stationIdToLocation.Remove(stationId);
                 conIdToStationId.Remove(conn.connectionId);
                 RemakeStationPanel();
             }
+            
             objects.Remove(conn.connectionId);
         }
 
@@ -345,7 +346,7 @@ namespace StationsAndHubs.Scripts
             string[] imposterNames = null;
             if (AmongUsGoSettings.singleton.assignImposters)
             {
-                Debug.Log("ASSIGN IMPOSTERS"+AmongUsGoSettings.singleton.assignImposters);
+                Debug.Log("ASSIGN IMPOSTERS "+AmongUsGoSettings.singleton.assignImposters);
                 foreach (var _name in players.Keys)
                 {
                     var go = GameObject.Find(_name);
@@ -560,7 +561,7 @@ namespace StationsAndHubs.Scripts
             
         }
 
-        public string GenerateGameCode(int l = 6)
+        public string GenerateGameCode(int l = 5)
         {
             string code = "";
             for (var i = 0; i < l; i++)
@@ -827,6 +828,16 @@ namespace StationsAndHubs.Scripts
             }
 
             return null;
+        }
+
+        public void UpdateStationLocation(int id, string location)
+        {
+            stationIdToLocation[conIdToStationId[id]] = location;
+        }
+
+        public string GetIP()
+        {
+            return this.networkAddress;
         }
     }
 }

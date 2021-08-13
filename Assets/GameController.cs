@@ -952,6 +952,10 @@ public class GameController : MonoBehaviour
     }
     private void LoadTaskGame(string tname)
     {
+        if (tname.Contains("#"))
+        {
+            tname = tname.Substring(tname.IndexOf("#") + 1);
+        }
         foreach (var task in tasks)
         {
             Debug.Log("task : " + task.name+ " :loc :" + task.location + "<"+tname);

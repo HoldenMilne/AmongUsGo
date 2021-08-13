@@ -38,18 +38,19 @@ public class WallSetter : MonoBehaviour
 
     private void SetObjectSize()
     {
+        var cam = Camera.main;
         if (horizontal)
         {
-            var y = (Camera.main.ScreenToWorldPoint(placer.rect.center) -
-                     Camera.main.ScreenToWorldPoint(placer.rect.center + Vector2.up * placer.rect.yMax)).magnitude /4f;
+            var y = (cam.ScreenToWorldPoint(placer.rect.center) -
+                     cam.ScreenToWorldPoint(placer.rect.center + Vector2.up * placer.rect.height/1f)).magnitude /4f;
             var bc = transform.GetComponent<BoxCollider2D>();
             bc.size = new Vector2(bc.size.x, y);
         }
 
         else
         {
-            var x = (Camera.main.ScreenToWorldPoint(placer.rect.center) -
-                     Camera.main.ScreenToWorldPoint(placer.rect.center + Vector2.right * placer.rect.xMax)).magnitude /4f;
+            var x = (cam.ScreenToWorldPoint(placer.rect.center) -
+                     cam.ScreenToWorldPoint(placer.rect.center + Vector2.right * placer.rect.width/1f)).magnitude /4f;
             var bc = transform.GetComponent<BoxCollider2D>();
             bc.size = new Vector2(x, bc.size.y);
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ScrollLerp : MonoBehaviour
@@ -20,7 +21,7 @@ public class ScrollLerp : MonoBehaviour
         rect = GetComponent<RectTransform>();
         y = rect.anchoredPosition.y;
         //running = false;
-        StartCoroutine(LookUpCoroutine());
+        //StartCoroutine(LookUpCoroutine());
     }
 
     private IEnumerator LookUpCoroutine()
@@ -51,14 +52,14 @@ public class ScrollLerp : MonoBehaviour
         }
     }
 
-    private bool running = true;
+    public bool running = false;
 
     private float _trueSpeed = 0f;
     // Update is called once per frame
     void Update()
     {
         
-        if (Input.GetKeyDown(KeyCode.Space) && !running)
+        if (false && Input.GetKeyDown(KeyCode.Space) && !running)
         {
             FindObjectOfType<SoundController>()._music_source.Play();
             running = true;
@@ -66,8 +67,15 @@ public class ScrollLerp : MonoBehaviour
         }
     }
 
+    bool isEnabled(Canvas c)
+    {
+        return c.enabled;
+    }
+
     private IEnumerator TurnOnUI()
     {
+        if (uiCanvasRoots.Any(c => c.enabled)) yield break;
+        
         cgroup.alpha = 0;
         foreach (var c in uiCanvasRoots)
         {
@@ -85,5 +93,12 @@ public class ScrollLerp : MonoBehaviour
 
         FindObjectOfType<TitleController>().enabled = true;
         
+    }
+
+    public void StartLerp()
+    {
+        FindObjectOfType<SoundController>()._music_source.Play();
+        running = true;
+        StartCoroutine(LookUpCoroutine());
     }
 }

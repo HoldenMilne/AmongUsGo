@@ -6,9 +6,11 @@ using UnityEngine;
 public class HandleController : MonoBehaviour
 {
     public float garbageImpulse = 1f;
-    public RectTransform handleBase;
-
-    private RectTransform handle;
+    //public RectTransform handleBase;
+    // private RectTransform handle;
+    
+    public Transform handleBase;
+    private Transform handle;
 
     public BoxCollider2D bottomWall;
     private bool pressed = false;
@@ -29,15 +31,63 @@ public class HandleController : MonoBehaviour
 
         maxY = handle.position.y;
         minY = handleBase.position.y * 2 - maxY;
+
+        StartCoroutine(ErrorCatchAll());
     }
+
+    private IEnumerator ErrorCatchAll()
+    {
+        yield return new WaitForSeconds(10f);
+        var timer = 0f;
+        while (true)
+        {
+
+            var v = CheckVelocities();
+            if (v < 0.05f)
+            {
+                timer += Time.deltaTime;
+
+                if (timer > 8)
+                {
+                    Debug.Log("ERROR WITH THE EMPTY TRASH SYSTEM.");
+                    yield break;
+                }
+            }
+            else
+            {
+                timer = 0;
+            }
+            yield return null;
+        }
+    }
+
+    private float CheckVelocities()
+    {
+        var tot = 0f;
+        var gcs = FindObjectsOfType<GarbageController>();
+        foreach (var f in gcs)
+        {
+            tot += f.GetComponent<Rigidbody>().velocity.magnitude;
+        }
+
+        return tot / gcs.Length;
+    }
+
+
+    private float time;
+    private float timeDelay = 8f;
 
     public void OnClick()
     {
+        if (!pressed)
+            time = Time.time;
         pressed = true;
+        
     }
     
     public void OnRelease()
     {
+        time = Time.time;
         pressed = false;
     }
 
@@ -56,7 +106,7 @@ public class HandleController : MonoBehaviour
             pos.y = Mathf.Min(pos.y,maxY);
             handle.position = pos;
 
-            if (pos.y <= minY+0.01)
+            if (pos.y <= minY+0.01 || Time.time - time >timeDelay)
             {
                 success = true;
                 StartCoroutine(Success());

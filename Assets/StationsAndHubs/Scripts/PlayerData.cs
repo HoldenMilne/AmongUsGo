@@ -71,7 +71,6 @@ namespace StationsAndHubs.Scripts
         [Command]
         public void CmdRequestGameCode(int connId, string location)
         {
-            Debug.Log("REQUEST: GC");
             var cnm = (CustomNetworkManager) NetworkManager.singleton;
             //if (cnm.stationIdToLocation.ContainsValue(location)) // location exists
             //    return;
@@ -80,11 +79,13 @@ namespace StationsAndHubs.Scripts
             while (cnm.stationIdToLocation.ContainsKey(gc))
             {
                 gc = cnm.GenerateGameCode();
-                
             }
+            
+            isDataFirstSent = true;
             cnm.AddNewStation(connId,gc,location);
             TargetSetStationData(gc);
         }
+        
         [Command]
         public void IAmDead()
         {
@@ -372,11 +373,18 @@ namespace StationsAndHubs.Scripts
         [Command]
         public void UpdatePlayerLocation(int id, string location)
         {
-            var pd = ((CustomNetworkManager) NetworkManager.singleton).FindByConnId(id);
+            Debug.Log("Update location - <<<");
+            var cnm = ((CustomNetworkManager) NetworkManager.singleton);
+            var pd = cnm.FindByConnId(id);
             if (pd != null)
             {
                 Debug.Log("curLocation"+location);
                 pd.currentLocation = location;
+                if (pd.type == PlayerType.Station)
+                {
+                    Debug.Log("STATION:::");
+                    cnm.UpdateStationLocation(id,location);
+                }
             }
             else
             {
@@ -385,7 +393,6 @@ namespace StationsAndHubs.Scripts
         }
         private GameTask ParseTask(string t)
         {
-        
             Debug.Log(t);
             string[] t_data = t.Split(new string[]{" : "},StringSplitOptions.None);
             

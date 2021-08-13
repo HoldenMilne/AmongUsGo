@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mirror;
@@ -9,7 +10,7 @@ using UnityEngine.UI;
 public class TEMP_UpdatePlayerName : MonoBehaviour
 {
     public InputField input;
-
+    public Text locationNameText;
     private PlayerData playerData;
     // Start is called before the first frame update
     void Start()
@@ -79,11 +80,24 @@ public class TEMP_UpdatePlayerName : MonoBehaviour
         nid = playerData.gameObject.GetComponent<NetworkIdentity>();
         if (nid.isLocalPlayer)
         {
-            if (playerData.isDataFirstSent)
-                ;//playerData.Cmd(playerData.connId);
-                
+            if (location.Equals("RANDOM ROOM", StringComparison.InvariantCultureIgnoreCase))
+            {
+                location += "#" + input.text;
+                locationNameText.text = input.text;
+            }
             else
+            {
+                locationNameText.text = location;
+            }
+            
+            if (playerData.isDataFirstSent)
+            {
+                playerData.UpdatePlayerLocation(playerData.connId,location);
+            }
+            else
+            {
                 playerData.CmdRequestGameCode(playerData.connId,location);
+            }
         }
         
     }

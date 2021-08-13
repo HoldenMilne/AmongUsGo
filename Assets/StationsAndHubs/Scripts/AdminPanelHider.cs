@@ -17,13 +17,24 @@ public class AdminPanelHider : MonoBehaviour
 
     public float sleepDelay = 3;
     // Update is called once per frame
+    private bool keyDown = false;
     void Update()
     {
-        if (!open && (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0 || Input.anyKeyDown))
+        if (!open && (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0 || (Input.anyKey && !keyDown)))
         {
             ShowHideCover(true);
             open = true;
             time = Time.time;
+            keyDown = true;
+        }
+        
+        if (Input.anyKey)
+        {
+            time = Time.time;
+        }
+        else
+        {
+            keyDown = false;
         }
 
         if (open && Time.time-time>sleepDelay)

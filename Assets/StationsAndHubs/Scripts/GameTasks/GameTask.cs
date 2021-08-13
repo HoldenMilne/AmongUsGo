@@ -193,6 +193,7 @@ namespace StationsAndHubs.Scripts.GameTasks
         Debug.Log("ERR SIZE"+locations.Count);
         foreach(string loc in locations)
         {
+            Debug.Log("RAN"+ " "+loc);
             if(loc.StartsWith("RANDOM ROOM#"))
             {
                 rrlocs.Add(loc.Substring(loc.IndexOf("#")+1));
@@ -204,7 +205,7 @@ namespace StationsAndHubs.Scripts.GameTasks
         if(rrlocs.Count == 0)
         {
             return getRandomElement(deflocs);
-        }else{
+        }else if(deflocs.Count!=0){
             int r = (int)(UnityEngine.Random.Range(0,3));
             if(r==0)
             {

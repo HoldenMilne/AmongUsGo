@@ -49,7 +49,12 @@ public class AdminPanel : MonoBehaviour
         
         foreach (var p in sorted)
         {
-            var p_obj = cnm.players[p].gameObject.GetComponent<PlayerData>();
+            var pl = cnm.players[p];
+            
+            if (!cnm.players.ContainsKey(p) || pl == null) continue;
+            if (pl == null) continue;
+            
+            var p_obj = pl.gameObject.GetComponent<PlayerData>();
             if(AmongUsGoSettings.singleton.adminPanelOnlyShowAtStations && p_obj.currentLocation.Equals("Unknown",StringComparison.InvariantCultureIgnoreCase))
                 continue;
             var go = GameObject.Instantiate(adminDisplayObject,spawnPoint.transform) as GameObject;
